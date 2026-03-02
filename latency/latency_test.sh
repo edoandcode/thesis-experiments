@@ -13,7 +13,7 @@ OUTPUT_FILE="latency_${SCENARIO}.csv"
 # HEADER CSV
 # ==============================
 
-echo "run,scenario,ttfb_ms,rtt_ms,total_ms" > $OUTPUT_FILE
+echo "run;scenario;ttfb_ms;rtt_ms;total_ms" > $OUTPUT_FILE
 
 # ==============================
 # TEST LOOP
@@ -31,11 +31,11 @@ do
   TTFB_MS=$(echo "$TTFB * 1000" | bc -l)
   TOTAL_MS=$(echo "$TOTAL * 1000" | bc -l)
 
-  echo "$i,$SCENARIO,$TTFB_MS,$RTT_MS,$TOTAL_MS" >> $OUTPUT_FILE
+  echo "$i;$SCENARIO;$TTFB_MS;$RTT_MS;$TOTAL_MS" >> $OUTPUT_FILE
 
   echo "Run $i completed"
 
   sleep 1
 done
 
-echo "Test completato. File salvato in $OUTPUT_FILE"
+echo "Test completed. File saved in $OUTPUT_FILE"
