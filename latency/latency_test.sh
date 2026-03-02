@@ -5,7 +5,7 @@
 # ==============================
 
 URL="https://edoandcode.com/"
-SCENARIO="no-cdn"    
+SCENARIO="cdn"    
 RUNS=30
 OUTPUT_FILE="latency_${SCENARIO}.csv"
 

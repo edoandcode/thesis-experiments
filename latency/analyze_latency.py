@@ -6,15 +6,17 @@ import os
 # CONFIGURAZIONE
 # ==============================
 
-CSV_FILE = "latency_no-cdn.csv"   # Cambia quando analizzi l'altro scenario
-OUTPUT_FILE = "summary_latency.csv"
+CSV_FILE = "latency_cdn.csv"   # Cambia per l'altro scenario
+
+OUTPUT_TTFB = "summary_ttfb.csv"
+OUTPUT_RTT = "summary_rtt.csv"
+OUTPUT_TOTAL = "summary_total.csv"
 
 # ==============================
 # LETTURA CSV
 # ==============================
 
 df = pd.read_csv(CSV_FILE, sep=";")
-
 scenario = df["scenario"].iloc[0]
 
 # ==============================
@@ -23,54 +25,45 @@ scenario = df["scenario"].iloc[0]
 
 def compute_stats(series):
     return {
-        "mean": series.mean(),
-        "std": series.std(),
-        "p50": np.percentile(series, 50),
-        "p95": np.percentile(series, 95),
-        "p99": np.percentile(series, 99),
+        "scenario": scenario,
+        "mean_ms": series.mean(),
+        "std_ms": series.std(),
+        "p50_ms": np.percentile(series, 50),
+        "p95_ms": np.percentile(series, 95),
+        "p99_ms": np.percentile(series, 99),
     }
+
+# ==============================
+# CALCOLO METRICHE
+# ==============================
 
 ttfb_stats = compute_stats(df["ttfb_ms"])
 rtt_stats = compute_stats(df["rtt_ms"])
 total_stats = compute_stats(df["total_ms"])
 
 # ==============================
-# CREAZIONE DATAFRAME RIASSUNTIVO
+# FUNZIONE SALVATAGGIO
 # ==============================
 
-summary_row = {
-    "scenario": scenario,
-    
-    "ttfb_mean_ms": ttfb_stats["mean"],
-    "ttfb_std_ms": ttfb_stats["std"],
-    "ttfb_p50_ms": ttfb_stats["p50"],
-    "ttfb_p95_ms": ttfb_stats["p95"],
-    "ttfb_p99_ms": ttfb_stats["p99"],
-    
-    "rtt_mean_ms": rtt_stats["mean"],
-    "rtt_std_ms": rtt_stats["std"],
-    "rtt_p50_ms": rtt_stats["p50"],
-    "rtt_p95_ms": rtt_stats["p95"],
-    "rtt_p99_ms": rtt_stats["p99"],
-    
-    "total_mean_ms": total_stats["mean"],
-    "total_std_ms": total_stats["std"],
-    "total_p50_ms": total_stats["p50"],
-    "total_p95_ms": total_stats["p95"],
-    "total_p99_ms": total_stats["p99"],
-}
+def save_summary(stats_dict, output_file):
+    summary_df = pd.DataFrame([stats_dict])
 
-summary_df = pd.DataFrame([summary_row])
+    if os.path.exists(output_file):
+        existing_df = pd.read_csv(output_file)
+        combined_df = pd.concat([existing_df, summary_df], ignore_index=True)
+        combined_df.to_csv(output_file, index=False)
+    else:
+        summary_df.to_csv(output_file, index=False)
 
 # ==============================
-# SALVATAGGIO
+# SALVATAGGIO FILE SEPARATI
 # ==============================
 
-if os.path.exists(OUTPUT_FILE):
-    existing_df = pd.read_csv(OUTPUT_FILE)
-    combined_df = pd.concat([existing_df, summary_df], ignore_index=True)
-    combined_df.to_csv(OUTPUT_FILE, index=False)
-else:
-    summary_df.to_csv(OUTPUT_FILE, index=False)
+save_summary(ttfb_stats, OUTPUT_TTFB)
+save_summary(rtt_stats, OUTPUT_RTT)
+save_summary(total_stats, OUTPUT_TOTAL)
 
-print(f"Statistiche salvate in {OUTPUT_FILE}")
+print("Statistiche salvate in:")
+print(f"- {OUTPUT_TTFB}")
+print(f"- {OUTPUT_RTT}")
+print(f"- {OUTPUT_TOTAL}")
