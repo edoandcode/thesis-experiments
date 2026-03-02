@@ -6,11 +6,28 @@ import os
 # CONFIGURAZIONE
 # ==============================
 
-CSV_FILE = "latency_cdn.csv"   # Cambia per l'altro scenario
+ENDPOINT_NAME = "welcome"     # welcome | images_small | images_large | jwt
+SCENARIO = "cdn"              # cdn | no-cdn
 
-OUTPUT_TTFB = "summary_ttfb.csv"
-OUTPUT_RTT = "summary_rtt.csv"
-OUTPUT_TOTAL = "summary_total.csv"
+# ==============================
+# COSTRUZIONE PATH
+# ==============================
+
+BASE_DIR = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../../")
+)
+
+RESULTS_DIR = os.path.join(
+    BASE_DIR, "experiments", "latency", ENDPOINT_NAME
+)
+
+CSV_FILE = os.path.join(
+    RESULTS_DIR, f"latency_{SCENARIO}_raw.csv"
+)
+
+OUTPUT_TTFB = os.path.join(RESULTS_DIR, "summary_ttfb.csv")
+OUTPUT_RTT = os.path.join(RESULTS_DIR, "summary_rtt.csv")
+OUTPUT_TOTAL = os.path.join(RESULTS_DIR, "summary_total.csv")
 
 # ==============================
 # LETTURA CSV
@@ -26,11 +43,11 @@ scenario = df["scenario"].iloc[0]
 def compute_stats(series):
     return {
         "scenario": scenario,
-        "mean_ms": series.mean(),
-        "std_ms": series.std(),
-        "p50_ms": np.percentile(series, 50),
-        "p95_ms": np.percentile(series, 95),
-        "p99_ms": np.percentile(series, 99),
+        "mean_ms": round(series.mean(), 2),
+        "std_ms": round(series.std(), 2),
+        "p50_ms": round(np.percentile(series, 50), 2),
+        "p95_ms": round(np.percentile(series, 95), 2),
+        "p99_ms": round(np.percentile(series, 99), 2),
     }
 
 # ==============================
@@ -56,7 +73,7 @@ def save_summary(stats_dict, output_file):
         summary_df.to_csv(output_file, index=False)
 
 # ==============================
-# SALVATAGGIO FILE SEPARATI
+# SALVATAGGIO
 # ==============================
 
 save_summary(ttfb_stats, OUTPUT_TTFB)
