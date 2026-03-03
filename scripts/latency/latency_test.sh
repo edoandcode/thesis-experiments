@@ -4,13 +4,13 @@
 # CONFIGURAZIONE
 # ==============================
 
-URL="https://edoandcode.com/protected" # URL da testare (corrispondente all'endpoint scelto)
-ENDPOINT_NAME="protected"     # welcome | images_small | images_large | jwt | protected | protected_authenticated
-SCENARIO="cdn"                   # cdn | no-cdn
+URL="https://edoandcode.com/images/large.jpg?width=400&quality=80" # URL da testare (corrispondente all'endpoint scelto)
+ENDPOINT_NAME="images_large"     # welcome | images_small | images_large | jwt | protected | protected_authenticated
+SCENARIO="no-cdn"                   # cdn | no-cdn
 RUNS=50
 
 # Token opzionale (lascia vuoto per test senza autenticazione)
-AUTH_TOKEN=""   # es: AUTH_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+AUTH_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWEwNjZkZDViNmJiN2YyMGIyYzY3NTMiLCJlbWFpbCI6ImVkb3NAZ21haWwuY29tIiwiaWF0IjoxNzcyMjEwNzUyfQ.PW0P0URLJ3hKj1YDhglFMyktUJsGoJolyvQ6SlEaKd8"   # es: AUTH_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 
 # ==============================
 # PATH RISULTATI
