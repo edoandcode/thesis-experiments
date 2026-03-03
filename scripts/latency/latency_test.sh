@@ -4,10 +4,13 @@
 # CONFIGURAZIONE
 # ==============================
 
-URL="https://edoandcode.com/"
-ENDPOINT_NAME="welcome"     # welcome | images_small | images_large | jwt
-SCENARIO="cdn"              # cdn | no-cdn
-RUNS=30
+URL="https://edoandcode.com/protected" # URL da testare (corrispondente all'endpoint scelto)
+ENDPOINT_NAME="protected"     # welcome | images_small | images_large | jwt | protected | protected_authenticated
+SCENARIO="cdn"                   # cdn | no-cdn
+RUNS=50
+
+# Token opzionale (lascia vuoto per test senza autenticazione)
+AUTH_TOKEN=""   # es: AUTH_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 
 # ==============================
 # PATH RISULTATI
@@ -24,7 +27,7 @@ OUTPUT_FILE="$RESULTS_DIR/latency_${SCENARIO}_raw.csv"
 # HEADER CSV
 # ==============================
 
-echo "run;scenario;ttfb_ms;rtt_ms;total_ms" > "$OUTPUT_FILE"
+echo "run;scenario;status;ttfb_ms;rtt_ms;total_ms" > "$OUTPUT_FILE"
 
 # ==============================
 # TEST LOOP
@@ -32,22 +35,46 @@ echo "run;scenario;ttfb_ms;rtt_ms;total_ms" > "$OUTPUT_FILE"
 
 for ((i=1;i<=RUNS;i++))
 do
-  RESULT=$(curl -o /dev/null -s -w "%{time_connect},%{time_starttransfer},%{time_total}" "$URL")
 
-  RTT=$(echo "$RESULT" | cut -d',' -f1)
-  TTFB=$(echo "$RESULT" | cut -d',' -f2)
-  TOTAL=$(echo "$RESULT" | cut -d',' -f3)
+  # Costruzione comando curl con token opzionale
+  if [ -n "$AUTH_TOKEN" ]; then
+    CURL_CMD=(curl -s -o /dev/null \
+      -H "x-auth-token: $AUTH_TOKEN" \
+      -w "%{http_code},%{time_connect},%{time_starttransfer},%{time_total}" \
+      "$URL")
+  else
+    CURL_CMD=(curl -s -o /dev/null \
+      -w "%{http_code},%{time_connect},%{time_starttransfer},%{time_total}" \
+      "$URL")
+  fi
+
+  RESULT=$("${CURL_CMD[@]}")
+
+  STATUS=$(echo "$RESULT" | cut -d',' -f1)
+  RTT=$(echo "$RESULT" | cut -d',' -f2)
+  TTFB=$(echo "$RESULT" | cut -d',' -f3)
+  TOTAL=$(echo "$RESULT" | cut -d',' -f4)
 
   RTT_MS=$(echo "$RTT * 1000" | bc -l)
   TTFB_MS=$(echo "$TTFB * 1000" | bc -l)
   TOTAL_MS=$(echo "$TOTAL * 1000" | bc -l)
 
-  echo "$i;$SCENARIO;$TTFB_MS;$RTT_MS;$TOTAL_MS" >> "$OUTPUT_FILE"
+  # Salvataggio CSV
+  echo "$i;$SCENARIO;$STATUS;$TTFB_MS;$RTT_MS;$TOTAL_MS" >> "$OUTPUT_FILE"
 
-  echo "Run $i completed"
+  # Output realtime dettagliato
+  echo "----------------------------------------"
+  echo "Run: $i"
+  echo "Status: $STATUS"
+  echo "RTT:    $RTT_MS ms"
+  echo "TTFB:   $TTFB_MS ms"
+  echo "TOTAL:  $TOTAL_MS ms"
+  echo "----------------------------------------"
 
   sleep 1
 done
 
-echo "Test completed. File saved in:"
+echo ""
+echo "Test completed."
+echo "File saved in:"
 echo "$OUTPUT_FILE"
