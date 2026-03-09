@@ -1,0 +1,3 @@
+Label,# Samples,Average,Median,90% Line,95% Line,99% Line,Min,Max,Error %,Throughput,Received KB/sec,Sent KB/sec
+GET_image_resize,55161,81,80,90,104,116,64,435,100.000%,917.77449,267.09,112.03
+TOTAL,55161,81,80,90,104,116,64,435,100.000%,917.77449,267.09,112.03
