@@ -33,38 +33,23 @@
           <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
         </ConfigTestElement>
         <hashTree/>
-        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
               <stringProp name="Header.name">x-auth-token</stringProp>
-              <stringProp name="Header.value">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWEwNjZkZDViNmJiN2YyMGIyYzY3NTMiLCJlbWFpbCI6ImVkb3NAZ21haWwuY29tIiwiaWF0IjoxNzcyMjEwNzUyfQ.PW0P0URLJ3hKj1YDhglFMyktUJsGoJolyvQ6SlEaKd8</stringProp>
+              <stringProp name="Header.value">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OWE2YWY5MGQ4NWE3ZmFhYTgyZmUwNzMiLCJlbWFpbCI6ImVkb2FuZGNvZGVAZ21haWwuY29tIiwiaWF0IjoxNzcyNTMxNjI2fQ.-__7uA2wqEYu6CCotkbfJIWssLJchGsBAGdMOMqidaQ</stringProp>
             </elementProp>
           </collectionProp>
         </HeaderManager>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET_images_large">
-          <stringProp name="HTTPSampler.path">/images/large.jpg</stringProp>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET_protected_authenticated" enabled="true">
+          <stringProp name="HTTPSampler.path">/protected</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
           <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="width" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">400</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">width</stringProp>
-              </elementProp>
-              <elementProp name="quality" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">80</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">quality</stringProp>
-              </elementProp>
-            </collectionProp>
+            <collectionProp name="Arguments.arguments"/>
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree/>
@@ -102,7 +87,7 @@
               <connectTime>true</connectTime>
             </value>
           </objProp>
-          <stringProp name="filename">../../experiments/throughput/images_large/raw_cdn.csv</stringProp>
+          <stringProp name="filename">../../experiments/throughput/protected_authenticated/raw_no-cdn.csv</stringProp>
         </ResultCollector>
         <hashTree/>
       </hashTree>
