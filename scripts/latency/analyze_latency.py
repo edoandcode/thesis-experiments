@@ -6,8 +6,8 @@ import os
 # CONFIGURAZIONE
 # ==============================
 
-ENDPOINT_NAME = "welcome"     # welcome | images_small | images_large | protected | protected_authenticated
-SCENARIO = "no-cdn"              # cdn | no-cdn
+ENDPOINT_NAME = "protected_authenticated"     # welcome | images_small | images_large | protected | protected_authenticated
+SCENARIO = "cdn"              # cdn | no-cdn
 
 # ==============================
 # COSTRUZIONE PATH
