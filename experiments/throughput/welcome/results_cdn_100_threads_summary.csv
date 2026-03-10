@@ -1,3 +1,0 @@
-Label,# Samples,Average,Median,90% Line,95% Line,99% Line,Min,Max,Error %,Throughput,Received KB/sec,Sent KB/sec
-GET_welcome,54413,93,32,41,43,119,19,42252,1.393%,725.71954,516.31,228.91
-TOTAL,54413,93,32,41,43,119,19,42252,1.393%,725.71954,516.31,228.91
