@@ -1,0 +1,3 @@
+scenario,rps,received_kb_sec,sent_kb_sec,error_rate
+cdn,7126.77,100511.23,2456.79,0.0
+no-cdn,115.21,1796.07,39.72,0.0
