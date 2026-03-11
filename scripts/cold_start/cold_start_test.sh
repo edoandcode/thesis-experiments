@@ -2,7 +2,7 @@
 
 # Target endpoint handled by the Cloudflare Worker.
 # This endpoint should trigger the Worker logic so that a cold start can occur.
-URL="https://tuodominio.com/welcome"
+URL="https://edoandcode.com/"
 
 # Wait for a period of inactivity to allow the Worker instance to be unloaded.
 # This increases the probability that the next request will trigger a cold start.
